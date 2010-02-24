@@ -1,18 +1,29 @@
 #!/usr/bin/env ruby -wKu
 
+ALPHA="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+ALPHA_ZIP="RSTUVWXYZABCDEFGHIJKLMNOPQ"
+
+s_al = ALPHA.downcase
+s_al_zip = ALPHA_ZIP.downcase
+l_al = ALPHA
+l_al_zip = ALPHA_ZIP
+
 
 while line=gets
     line.chomp!
-#    dumped = line.unpack("H*")[0].scan(/[0-9a-f]{2}/)
-    dumped = line.unpack("C*")
-    p dumped
-    mapped = dumped.map { |c| 
-        if c >=65 or c <= 90
-            c+=17 ; c.chr
+    output = []
+    line.each_char do |c|
+        si = s_al.index(c)
+        li = l_al.index(c)
+        if si != nil 
+            oc = s_al_zip[si]
+        elsif li != nil
+            oc = l_al_zip[li]
         else
-            c+=17-25 ; c.chr
+            oc = c.unpack("C*")[0]
         end
-    }
-    p mapped
+        output << oc.chr
+    end
+    puts output.to_s
 end
 
